@@ -5,7 +5,7 @@ The AI is using rules below:
 - When Agent has gold. Agent go back the START square.
 - Shooting the monster, when Agent detects exactly monster square.
 - Prefer visit all square, which is exactly safety square.
-- Prefer shooting when Agent having doubt place, which Wumpus stay.
+- Prefer shooting monster when Agent having doubt monster square.
 - Go to the most safest square. Which can be HOLE, MONSTER.
 
 The project has using Shortest Path in grid matrix.
