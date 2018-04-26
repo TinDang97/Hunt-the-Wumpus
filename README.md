@@ -10,3 +10,5 @@ The AI is using rules below:
 
 The project has using Shortest Path in grid matrix.
 https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/
+
+Youtube: https://youtu.be/0q5_MYh8uCA
