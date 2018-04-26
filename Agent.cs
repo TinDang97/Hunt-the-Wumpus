@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,26 +55,16 @@ namespace Wumpus
             Property = property;
             this.Item = Item;
         }
-        
-        public void TickIsMonster() {
-            if (IsSafe || IsVisited)
-                return;
 
-            Console.WriteLine(Location.ToString() + "---");
-
-            IsMonsterTime++;
-        }
         public void TickIsHole() {
             if (IsSafe || IsVisited || IsHoleTime == int.MaxValue)
                 return;
-            Console.WriteLine(Location.ToString() + "---");
 
             IsHoleTime++;
 
             if (IsHoleTime > 2)
                 IsHoleTime = int.MaxValue;
         }
-        public Boolean IsMonter() { return IsMonsterTime >= 2; }
     }
     
     class Agent
@@ -122,6 +112,8 @@ namespace Wumpus
             funcShow.Invoke("I'm READY for TRAVEL!!!", null, Curr);
         }
 
+        //Finding and connecting all near square in the map.
+
         public void ConnectNeighber(SquareOfAgent square)
         {
             int X = square.Location.X;
@@ -162,6 +154,8 @@ namespace Wumpus
             }
         }
 
+        //Finding the square as same as location.
+
         public SquareOfAgent FindMatch(SquareOfAgent squareCurr, Point location)
         {
             if (squareCurr == null)
@@ -174,6 +168,7 @@ namespace Wumpus
             return result;
         }
 
+        // Creating the new neighber square TOP, BOT, LEFT, RIGHT of the nSquare.
         public void CreateNeighber(SquareOfAgent nSquare)
         {
             if (nSquare.IsVisited)
@@ -181,8 +176,6 @@ namespace Wumpus
                 Console.WriteLine("Isvisited!");
                 return;
             }
-
-            //ConnectNeighber(nSquare);
 
             List<SquareOfAgent> NullSquare = new List<SquareOfAgent>();
 
@@ -371,89 +364,6 @@ namespace Wumpus
                 Console.WriteLine("Result shortest: " + result.Location);
 
             return result;
-
-            /*long min = long.MaxValue;
-            long distanceTop, distanceBot, distanceLeft, distanceRight;
-
-            distanceTop = ShortestPathtoPoint(new List<SquareOfAgent>(), Curr.Top, end);
-            distanceBot = ShortestPathtoPoint(new List<SquareOfAgent>(), Curr.Bot, end);
-            distanceLeft = ShortestPathtoPoint(new List<SquareOfAgent>(), Curr.Left, end);
-            distanceRight = ShortestPathtoPoint(new List<SquareOfAgent>(), Curr.Right, end);
-
-
-            min = Math.Min(min, distanceTop);
-            min = Math.Min(min, distanceBot);
-            min = Math.Min(min, distanceLeft);
-            min = Math.Min(min, distanceRight);
-
-            Console.WriteLine("min-------> " + min + " - " + distanceTop + " - " + distanceBot + " - "+ distanceLeft + " - "+ distanceRight);
-
-            if (min == long.MaxValue)
-                return null;
-
-            if (min == distanceTop)
-                return Curr.Top;
-
-            if (min == distanceBot)
-                return Curr.Bot;
-
-            if (min == distanceLeft)
-                return Curr.Left;
-
-            if (min == distanceRight)
-                return Curr.Right;
-
-            return null;*/
-
-            /*if (start == null || end == null)
-                return null;
-
-            if (end.Location.X == start.Location.X && end.Location.Y == start.Location.Y)
-                return start;
-
-
-            Point pStart = start.Location;
-            Point pEnd = end.Location;
-
-            int distanceTop = int.MaxValue;
-            int distanceBot = int.MaxValue;
-            int distanceLeft = int.MaxValue;
-            int distanceRight = int.MaxValue;
-
-            if (start.Top != null)
-                distanceTop = ShortestDistanceToPoint(pEnd, new Point(pStart.X, pStart.Y - 1));
-
-            if (start.Bot != null)
-                distanceBot = ShortestDistanceToPoint(pEnd, new Point(pStart.X, pStart.Y + 1));
-
-            if (start.Left != null)
-                distanceLeft = ShortestDistanceToPoint(pEnd, new Point(pStart.X - 1, pStart.Y));
-
-            if (start.Right != null)
-                distanceRight = ShortestDistanceToPoint(pEnd, new Point(pStart.X + 1, pStart.Y));
-
-            int min = Math.Min(distanceTop, distanceBot);
-            min = Math.Min(min, distanceLeft);
-            min = Math.Min(min, distanceRight);
-
-            Console.WriteLine("min-------> " + min);
-
-            if (min == int.MaxValue)
-                return null;
-
-            if (min == distanceTop)
-                return start.Top;
-
-            if (min == distanceBot)
-                return start.Bot;
-
-            if (min == distanceLeft)
-                return start.Left;
-
-            if (min == distanceRight)
-                return start.Right;
-                
-            return null;*/
         }
 
         private void ShortestPathtoPoint( ref List<SquareOfAgent> gone, ref SquareOfAgent result, Queue<SquareOfAgent> MapTravel)
@@ -544,84 +454,7 @@ namespace Wumpus
             foreach (SquareOfAgent square in nonGone)
                 MapTravel.Enqueue(square);
 
-            ShortestPathtoPoint(ref gone, ref result, MapTravel);
-
-
-            /*
-            if (CurrSquare == null)
-                return int.MaxValue;
-
-            if (CurrSquare.Equals(End))
-                return 0;
-
-            if (!CurrSquare.GetIsSafe())
-                return int.MaxValue;
-
-            if (gone.Contains(CurrSquare))
-                return int.MaxValue;
-
-            gone.Add(CurrSquare);
-
-            long distanceTop = 1 + ShortestPathtoPoint(gone, CurrSquare.Top, End);
-            long distanceBot = 1 + ShortestPathtoPoint(gone, CurrSquare.Bot, End);
-            long distanceLeft = 1 + ShortestPathtoPoint(gone, CurrSquare.Left, End);
-            long distanceRight = 1 + ShortestPathtoPoint(gone, CurrSquare.Right, End);
-
-            long min = long.MaxValue;
-
-            min = Math.Min(min, distanceTop);
-            min = Math.Min(min, distanceBot);
-            min = Math.Min(min, distanceLeft);
-            min = Math.Min(min, distanceRight);
-
-            return min;
-            /*
-            if (result != null)
-                return false;
-
-            if (CurrSquare == null)
-                return false;
-
-            if (!CurrSquare.IsVisited)
-            {
-                return false;
-            }
-
-            if (gone.Contains(CurrSquare))
-                return false;
-
-            if(CurrSquare.Top != null && result == null)
-                if(CurrSquare.Top.Location.X == Curr.Location.X && CurrSquare.Top.Location.Y == Curr.Location.Y)
-                {
-                    result = CurrSquare;
-                    return true;
-                }
-            if (CurrSquare.Bot != null && result == null)
-                if (CurrSquare.Bot.Location.X == Curr.Location.X && CurrSquare.Bot.Location.Y == Curr.Location.Y)
-                {
-                    result = CurrSquare;
-                    return true;
-                }
-
-            if (CurrSquare.Left != null && result == null)
-                if (CurrSquare.Left.Location.X == Curr.Location.X && CurrSquare.Left.Location.Y == Curr.Location.Y)
-                {
-                    result = CurrSquare;
-                    return true;
-                }
-
-            if (CurrSquare.Right != null && result == null)
-                if (CurrSquare.Right.Location.X == Curr.Location.X && CurrSquare.Right.Location.Y == Curr.Location.Y)
-                {
-                    result = CurrSquare;
-                    return true;
-                }
-                
-
-            gone.Add(CurrSquare);
-
-            return ShortestPathtoPoint(gone, ref result, CurrSquare.Top) || ShortestPathtoPoint(gone, ref result, CurrSquare.Right)
-                || ShortestPathtoPoint(gone, ref result, CurrSquare.Bot) || ShortestPathtoPoint(gone, ref result, CurrSquare.Left);*/
+            ShortestPathtoPoint(ref gone, ref result, MapTravel);            
         }
 
         private void findSquareWithLocation(List<SquareOfAgent> gone, ref SquareOfAgent result ,SquareOfAgent SquareCurr, Point end) 
@@ -892,16 +725,6 @@ namespace Wumpus
 
         private String NextStep()
         {
-            /*
-            if (Curr.Top != null)
-                Console.WriteLine("T: " + Curr.Top.Location);
-            if (Curr.Bot != null)
-                Console.WriteLine("B: " + Curr.Bot.Location);
-            if (Curr.Left != null)
-                Console.WriteLine("L: " + Curr.Left.Location);
-            if (Curr.Right != null)
-                Console.WriteLine("R: " + Curr.Right.Location);
-                */
             if (haveGold)
             {
                 String tmp = DirectionToStart();
@@ -919,13 +742,6 @@ namespace Wumpus
 
             if (!isMonterExist.Equals("") && !MonsterIsDead)
             {
-                //if (MonsterIsDead)
-                //{
-                //    SquareOfAgent square = SquareMatchOfDir();
-                //    square.SetIsSafe(true);
-                //    square.IsMonsterTime = 0;
-                //}
-
                 if(direction.Equals(isMonterExist))
                 {
                     return Events.SHOT;
@@ -1024,19 +840,7 @@ namespace Wumpus
 
             if (!squareCurr.IsVisited)
                 return;
-            /*
-            if (squareCurr.Top != null)
-                squareCurr.Top.IsMonsterTime = 0;
 
-            if (squareCurr.Bot != null)
-                squareCurr.Bot.IsMonsterTime = 0;
-
-            if (squareCurr.Left != null)
-                squareCurr.Left.IsMonsterTime = 0;
-
-            if (squareCurr.Right != null)
-                squareCurr.Right.IsMonsterTime = 0;
-                */
             if (!squareCurr.Property.Breeze)
             {
                 if (squareCurr.Top != null)
@@ -1088,6 +892,7 @@ namespace Wumpus
             list[0].SetIsSafe(false);
         }
 
+        //The method receive data from SystemMaster. Object can be new squares, null squares or monster is died (boolean). 
         public void ExcuteEvent(Object Result, Boolean TheEnd)
         {
             _manualResetEvent.WaitOne(Timeout.Infinite);
@@ -1218,12 +1023,6 @@ namespace Wumpus
 
                     newSquare.IsVisited = true;
                     newSquare.SetIsSafe(true);
-
-                    /*if (Curr.Property.Breeze)
-                    {
-                        SettingBreeze(Curr);
-                    }*/
-
                     Curr = newSquare;
                 }
             }
