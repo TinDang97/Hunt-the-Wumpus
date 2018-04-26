@@ -1,5 +1,5 @@
 # Hunt-the-Wumpus
-Using AI that can play Hunt the Wumpus. Which call Agent.
+Using AI that can play Hunt the Wumpus, which call Agent.
 
 The AI is using rules below:
 - When Agent has gold. Agent go back the START square.
